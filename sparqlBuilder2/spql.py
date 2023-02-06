@@ -20,21 +20,6 @@ UNION
 ORDER BY ?categoryLabel
 """
 
-sample_query = """select distinct ?academicLabel ?deptLabel ?studyAreaLabel ?worksLabel
-where {
-  VALUES ?employer {wd:Q913861} .
-  ?academic wdt:P108 wd:Q913861 ;
-    wdt:P106 wd:Q1622272 ;
-    wdt:P1416 ?dept ; 
-    wdt:P101 ?studyArea ;
-  OPTIONAL {?academic wdt:P800 ?works} .
-  FILTER (?dept != wd:Q7413726)
-  VALUES ?studyArea {wd:Q35069} . 
-  service wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-  }
-order by ?academicLabel
-"""
-
 
 def get_wd_query(query):
     # retrieves a list matrix of the UNLV base query.
@@ -66,11 +51,12 @@ def load_item_detail(json_dict):
     clean_result = []
     for r in json_dict["results"]["bindings"]:
         # base query includes item (Q code) label, the property, English language prop value
-        item = r.get("itemLabel", {}).get("value")
+        item = r.get("item", {}).get("value")
+        item_label = r.get("itemLabel", {}).get("value")
         prop = r.get("property", {}).get("value")
         prop_code = re.split(r'\/', prop).pop()
         val = r.get("oLabel_en", {}).get("value")
-        clean_result_row = [item, prop_code, val]
+        clean_result_row = [item, item_label, prop_code, val]
         clean_result.append(clean_result_row)
 
     return clean_result
@@ -78,7 +64,7 @@ def load_item_detail(json_dict):
 
 def query_item_detail(qvalue):
     # provides query of properties for a given wikidata Q code
-    qry_begin = """select ?itemLabel ?property ?oLabel_en 
+    qry_begin = """select ?item ?itemLabel ?property ?oLabel_en 
 where {
   VALUES ?item {wd:"""
 

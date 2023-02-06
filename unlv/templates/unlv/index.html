@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UNLV Special Collections and Archives</title>
+</head>
+<body>
+
+{% if topic_results %}
+    <ul>
+        {% for r in topic_results %}
+            <li> {{ r.topic_id }} </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Did not work</p>
+{% endif %}
+</body>
+</html>

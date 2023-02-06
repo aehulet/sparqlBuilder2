@@ -18,11 +18,12 @@ UNION
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }  
 }
 ORDER BY ?categoryLabel
+LIMIT 50
 """
 
 
 def get_wd_query(query):
-    # retrieves a list matrix of the UNLV base query.
+    # retrieves a list matrix of the UNLV base query as a dict.
     user_agent = 'PySparqlTest/0.0 (https://linkedin.com/andre_hulet; andrehulet@gmail.com)'
     sparql = SPARQLWrapper(wd_endpoint, agent=user_agent)
     sparql.setQuery(query)

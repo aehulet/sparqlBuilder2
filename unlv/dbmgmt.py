@@ -26,18 +26,20 @@ def get_topic_data(reload: bool):
 
 def get_item_data(qcode):
     funct_val = False
+    # create nested results list from SPARQL query: works
     qry = spql.query_item_detail(qcode)
     result_dict = spql.get_wd_query(qry)
     item_results = spql.load_item_detail(result_dict)
 
-    i_objs = models.Item.objects.get(fk_topic_id=qcode)
+    # instantiate a QuerySet of existing Items
+    i_objs = models.Item.objects.all()
 
     # if i_objs:
     #    i_objs.delete()
     #    i_objs.update()
     for i in item_results:
-        new = i_objs.create()
-        new.fk_topic_id = i[0]
+        new = i_objs.create()  # code breaks here:  'Item' object has no attribute 'create'
+        new.topic_id = i[0]
         new.item_text = i[1]
         new.item_property = i[2]
         new.item_value = i[3]
@@ -47,8 +49,8 @@ def get_item_data(qcode):
 
 
 def test_item():
-    the_obj = models.Topic.objects.all()
+    s = ''
+    the_obj = models.Item.objects.all()
     for o in the_obj:
         s = o.topic_id
-    return s
-
+    return s + " from Item"

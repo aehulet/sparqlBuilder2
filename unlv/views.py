@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Topic, Item
-from .dbmgmt import get_topic_data
-
+from .dbmgmt import get_topic_data, get_item_data
+import re
 
 def index(request):
     get_topic_data(True)
@@ -12,4 +12,11 @@ def index(request):
 
 
 def item(request, item_id):
-    return HttpResponse("This is for the item details.")
+    # hacky way to get item id
+    elements = re.split(r'\/', request.path)
+    q_code = elements.pop(1)
+
+    get_item_data(q_code)
+    item_results = Item.objects.get(fk_topic_id=q_code)
+    context = {'item_results': item_results}
+    return render(request, 'unlv/item.html', context)

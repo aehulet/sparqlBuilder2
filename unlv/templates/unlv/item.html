@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Item details</title>
+</head>
+<body>
+{% if item_results %}
+      <table>
+          <thead><strong>"DETAILS FOR "{{ item_results.fk_topic_id }}</strong></thead>
+          <tr>
+            <td><strong>ITEM_TEXT</strong></td>
+            <td><strong>ITEM_PROPERTY</strong></td>
+            <td><strong>ITEM_VALUE</strong></td>
+        </tr>
+        {% for r in item_results %}
+            <tr>
+                <td>{{ r.item_text }}</td>
+                <td>{{ r.item_property }}</td>
+                <td>{{ r.item_value }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{
+{% else %}
+    <p>Failed to find any data.</p>
+{% endif %}
+</body>
+</html>

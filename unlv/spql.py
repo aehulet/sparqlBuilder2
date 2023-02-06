@@ -53,11 +53,12 @@ def load_item_detail(json_dict):
     for r in json_dict["results"]["bindings"]:
         # base query includes item (Q code) label, the property, English language prop value
         item = r.get("item", {}).get("value")
+        item_code = re.split(r'\/', item).pop()
         item_label = r.get("itemLabel", {}).get("value")
         prop = r.get("property", {}).get("value")
         prop_code = re.split(r'\/', prop).pop()
         val = r.get("oLabel_en", {}).get("value")
-        clean_result_row = [item, item_label, prop_code, val]
+        clean_result_row = [item_code, item_label, prop_code, val]
         clean_result.append(clean_result_row)
 
     return clean_result

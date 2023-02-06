@@ -7,11 +7,20 @@
 <body>
 
 {% if topic_results %}
-    <ul>
+    <table>
+        <tr>
+            <td><strong>Wikidata ID</strong></td>
+            <td><strong>Topic</strong></td>
+            <td><strong>Category</strong></td>
+        </tr>
         {% for r in topic_results %}
-            <li> {{ r.topic_id }} </li>
+            <tr>
+                <td><a href="/unlv/{{ r.topic_id }}/item">{{ r.topic_id }}</a></td>
+                <td>{{ r.topic_text }}</td>
+                <td>{{ r.category }}</td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 {% else %}
     <p>Did not work</p>
 {% endif %}

@@ -9,19 +9,16 @@ def get_topic_data(reload: bool):
         t = models.Topic.objects.all()
         if t:
             t.delete()
-            t.update()
-
+    try:
         qry = spql.get_wd_query(spql.LOAD_BASE)
         latest_result = spql.load_base(qry)
         for i in latest_result:
-            new = t.create()
-            new.topic_id = i[0]
-            new.topic_text = i[1]
-            new.category = i[2]
-            new.save()
+            new = models.Topic.objects.create(topic_id=i[0], topic_text=i[1], category=i[2])
         funct_val = True
+    except IndexError as ie:
+        return "error:Qcode already inserted"
 
-        return funct_val
+    return funct_val
 
 
 def get_item_data(qcode):
@@ -32,18 +29,12 @@ def get_item_data(qcode):
     item_results = spql.load_item_detail(result_dict)
 
     # instantiate a QuerySet of existing Items
-    i_objs = models.Item.objects.all()
+    objs = models.Item.objects.filter(topic_id=qcode)
+    objs.delete()
 
-    # if i_objs:
-    #    i_objs.delete()
-    #    i_objs.update()
     for i in item_results:
-        new = i_objs.create()  # code breaks here:  'Item' object has no attribute 'create'
-        new.topic_id = i[0]
-        new.item_text = i[1]
-        new.item_property = i[2]
-        new.item_value = i[3]
-        new.save()
+        new = models.Item(topic_id=i[0], item_text=i[1], item_property=i[2], item_value=i[3])
+        new.save(force_insert=True)
     funct_val = True
     return funct_val
 

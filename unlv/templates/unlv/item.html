@@ -7,7 +7,6 @@
 <body>
 {% if item_results %}
       <table>
-          <thead><strong>"DETAILS FOR "{{ item_results.fk_topic_id }}</strong></thead>
           <tr>
             <td><strong>ITEM_TEXT</strong></td>
             <td><strong>ITEM_PROPERTY</strong></td>
@@ -21,7 +20,6 @@
             </tr>
         {% endfor %}
     </table>
-{
 {% else %}
     <p>Failed to find any data.</p>
 {% endif %}

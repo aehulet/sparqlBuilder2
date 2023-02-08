@@ -7,11 +7,12 @@
 <body>
 {% if item_results %}
       <table>
+        <thead>Details for ... </thead><br>
           <tr>
             <td><strong>ITEM_TEXT</strong></td>
             <td><strong>ITEM_PROPERTY</strong></td>
             <td><strong>ITEM_VALUE</strong></td>
-        </tr>
+            </tr>
         {% for r in item_results %}
             <tr>
                 <td>{{ r.item_text }}</td>
@@ -20,6 +21,8 @@
             </tr>
         {% endfor %}
     </table>
+    <br>
+    <footer><a href="/unlv">Back to start page</a></footer>
 {% else %}
     <p>Failed to find any data.</p>
 {% endif %}

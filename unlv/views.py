@@ -6,7 +6,7 @@ import re
 
 def index(request):
     dbmgmt.get_topic_data(True)
-    topic_results = Topic.objects.all()
+    topic_results = Topic.objects.all().order_by('topic_id', 'category')
     context = {'topic_results': topic_results}
     return render(request, 'unlv/index.html', context)
 

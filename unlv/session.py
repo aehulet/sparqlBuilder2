@@ -1,5 +1,5 @@
 
-# class mainloaded(toggle:bool):
+# class main_loaded(toggle:bool):
 #     if toggle:
 #         funct_val = True
 #     else:

@@ -1,3 +1,5 @@
+import sys
+
 from . import spql
 from unlv import models
 
@@ -16,9 +18,11 @@ def get_topic_data(reload: bool):
             new = models.Topic.objects.create(topic_id=i[0], topic_text=i[1], category=i[2])
         funct_val = True
     except IndexError as ie:
-        return "error:Qcode already inserted"
+        return ie.__str__()
+    except Exception as e:
 
-    return funct_val
+    else:
+        return funct_val
 
 
 def get_item_data(qcode):
@@ -38,10 +42,14 @@ def get_item_data(qcode):
     funct_val = True
     return funct_val
 
-
-def test_item():
-    s = ''
-    the_obj = models.Item.objects.all()
-    for o in the_obj:
-        s = o.topic_id
-    return s + " from Item"
+def log_exception(e: sys.exc_info(), proc: str):
+    # TODO: replace pseudo code
+    val = False
+    # create new log table object
+    for t in e:
+        #
+        # write each member of the tuple to the new log record + proc & dt_stamp
+        # save record
+        val = True
+    return val
+        # TODO: build exception log model: primary key; class type; error; stacktrace; proc; dt_stamp

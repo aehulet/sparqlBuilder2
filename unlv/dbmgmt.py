@@ -6,23 +6,17 @@ from unlv import models
 
 def get_topic_data(reload: bool):
     # loads wikidata base query for topics into local db
+    funct_val = False
     if reload:
-        funct_val = False
         t = models.Topic.objects.all()
         if t:
             t.delete()
-    try:
         qry = spql.get_wd_query(spql.LOAD_BASE)
         latest_result = spql.load_base(qry)
         for i in latest_result:
             new = models.Topic.objects.create(topic_id=i[0], topic_text=i[1], category=i[2])
         funct_val = True
-    except IndexError as ie:
-        return ie.__str__()
-    except Exception as e:
-
-    else:
-        return funct_val
+    return funct_val
 
 
 def get_item_data(qcode):
@@ -42,6 +36,7 @@ def get_item_data(qcode):
     funct_val = True
     return funct_val
 
+
 def log_exception(e: sys.exc_info(), proc: str):
     # TODO: replace pseudo code
     val = False
@@ -52,4 +47,4 @@ def log_exception(e: sys.exc_info(), proc: str):
         # save record
         val = True
     return val
-        # TODO: build exception log model: primary key; class type; error; stacktrace; proc; dt_stamp
+    # TODO: build exception log model: primary key; class type; error; stacktrace; proc; dt_stamp

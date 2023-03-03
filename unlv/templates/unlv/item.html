@@ -5,6 +5,22 @@
     <title>Item details</title>
 </head>
 <body>
+{% if queries %}
+    <table>
+        <thead>Queries run so far: </thead>
+
+        {% for q in queries %}
+            <tr>
+                <td>{{ q.index }} ) </td>
+                <td>{{ q.title }}</td>
+                <td>{{ q.query }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No queries run yet.</p>
+{% endif %}
+<br><br>
 {% if item_results %}
       <table>
         <thead>Details for ... </thead><br>

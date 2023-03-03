@@ -1,8 +1,14 @@
 
-# class main_loaded(toggle:bool):
-#     if toggle:
-#         funct_val = True
-#     else:
-#         funct_val = False
+class QueryRecord:
+    title = ""
+    query = ""
+    index = 0
+    def __init__(self, title, query):
+        self.title = title
+        self.query = query
 
-#     return funct_val
+    def get_query(self):
+        return self.query
+
+    def set_index(self, num):
+        self.index = num

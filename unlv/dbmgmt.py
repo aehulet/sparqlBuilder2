@@ -26,7 +26,9 @@ def get_item_data(qcode):
     result_dict = spql.get_wd_query(qry)
     item_results = spql.load_item_detail(result_dict)
 
-    # instantiate a QuerySet of existing Items
+    # instantiate a QuerySet of existing Items. Getting recalled every time. Not necessary
+    # because this item query is immutable for the given session. Once the result
+    # is databased, the data should simply be called.
     objs = models.Item.objects.filter(topic_id=qcode)
     objs.delete()
 

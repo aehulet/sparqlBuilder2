@@ -1,6 +1,7 @@
 # py module for implementing SPARQLWrapper with UNLV requirements
 #
 import re
+
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 wd_endpoint = "https://query.wikidata.org/sparql"
@@ -68,7 +69,6 @@ def load_base(json_dict):
 
 def load_network(json_dict):
     # processes Darnelle's unlv network query in prep for visualization
-    # TODO: pop qcode from end of url, as with item
     clean_result = []
     for r in json_dict["results"]["bindings"]:
         # base query includes topic (Q code), topic label, category label (typeof)
@@ -77,7 +77,9 @@ def load_network(json_dict):
         item_key = item_split.pop()
         item_label = r.get("itemLabel", {}).get("value")
         item_desc = r.get("itemDescription", {}).get("value")
-        occupation_key = r.get('occupation', {}).get('value')
+        occupation = r.get('occupation', {}).get('value')
+        occupation_split = re.split(r'/', occupation)
+        occupation_key = occupation_split.pop()
         occupation_label = r.get("occupationLabel", {}).get("value")
         clean_result_row = [item_key, item_label, item_desc, occupation_key, occupation_label]
         clean_result.append(clean_result_row)
@@ -86,42 +88,42 @@ def load_network(json_dict):
 
 
 def visualize_network(source_list):
-    # TODO: not getting unique occupation list
     from pyvis.network import Network
+
+    # create empty network
     unlv_net = Network()
-    unlv_net.barnes_hut()
 
-    # get unique list of humans
-    human_list = []
-    curr_human = ''
+    # get unique lists of humans and occupations.
+    # note: assigning dups to a dict discards the dup.
+    human_dict = {}
+    occ_dict = {}
     for i in source_list:
-        if not i[1] == curr_human:
-            human_list.append([i[0], i[1]])
-            curr_human = i[1]
-    print(human_list)
-
-    # get unique list of occupations
-    occ_list = []
-    curr_occ = ''
-    for o in source_list:
-        if not o[4] == curr_occ:
-            occ_list.append([o[3], o[4]])
-            curr_occ = o[4]
-    print(occ_list)
+        human_dict[i[0]] = i[1]
+        occ_dict[i[3]] = i[4]
 
     # add human nodes
-    for h in human_list:
-        unlv_net.add_node(h[0], h[1], shape='circle')
+    for k, v in human_dict.items():
+        # print(k + ': ' + v)
+        unlv_net.add_node(k, v, shape='circle', color='#00BFFF')
 
     # occupation nodes
-    for o in occ_list:
-        unlv_net.add_node(o[0], o[1], shape='ellipse')
+    for k, v in occ_dict.items():
+        # print(k + ': ' + v)
+        unlv_net.add_node(k, v, shape='ellipse', color='#FF0000')
 
     # add edges
     for e in source_list:
         unlv_net.add_edge(e[0], e[3])
-    # create html
-    unlv_net.show('unlv_net.html', True)
+
+    # finish configure and create HTML
+    # unlv_net.path = '~/PycharmProjects/sparqlBuilder2'
+    unlv_net.show_buttons()
+    # unlv_net.template = '~/PycharmProjects/sparqlBuilder2/the_template.html'
+    the_html = unlv_net.generate_html()
+    # targ = open('~/PycharmProjects/sparqlBuilder2/new_net.html', 'w')
+    # targ.write(the_html)
+    # targ.close()
+    print(the_html)
 
 
 def load_item_detail(json_dict):

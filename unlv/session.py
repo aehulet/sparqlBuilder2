@@ -1,8 +1,8 @@
-
 class QueryRecord:
     title = ""
     query = ""
     index = 0
+
     def __init__(self, title, query):
         self.title = title
         self.query = query

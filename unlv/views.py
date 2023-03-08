@@ -6,6 +6,7 @@ import re
 session_queries = []
 query_count = 0
 
+
 def index(request):
     dbmgmt.get_topic_data(True)
     topic_results = Topic.objects.all().order_by('topic_id', 'category')

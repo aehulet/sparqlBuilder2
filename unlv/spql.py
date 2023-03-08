@@ -89,10 +89,10 @@ def load_network(json_dict):
 
 def visualize_network(source_list):
     from pyvis.network import Network
+    from bs4 import BeautifulSoup
 
     # create empty network
     unlv_net = Network()
-
     # get unique lists of humans and occupations.
     # note: assigning dups to a dict discards the dup.
     human_dict = {}
@@ -115,15 +115,12 @@ def visualize_network(source_list):
     for e in source_list:
         unlv_net.add_edge(e[0], e[3])
 
-    # finish configure and create HTML
-    # unlv_net.path = '~/PycharmProjects/sparqlBuilder2'
-    unlv_net.show_buttons()
-    # unlv_net.template = '~/PycharmProjects/sparqlBuilder2/the_template.html'
     the_html = unlv_net.generate_html()
-    # targ = open('~/PycharmProjects/sparqlBuilder2/new_net.html', 'w')
-    # targ.write(the_html)
-    # targ.close()
-    print(the_html)
+    doc = BeautifulSoup(the_html, 'html.parser')
+    body: str = doc.body
+    # remove_left = body[6:]
+    # body_clean: str = remove_left[:-7]
+    return body
 
 
 def load_item_detail(json_dict):

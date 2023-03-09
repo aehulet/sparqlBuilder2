@@ -48,7 +48,7 @@
     
     </head>
     <body>
- 
+
        <div id="selection"></div>        
        
        <div class="card" style="width: 100%">
@@ -132,14 +132,7 @@
               }
               drawGraph();
              
-        </script>
-        	<script type="text/javascript">
-					var params;					
-					// get selections out of graph using selectNode event
-					network.on("selectNode", function (params)  {              
-					//console.log(params);                
-               document.getElementById('selection').innerHTML = params.nodes[0];
-                });
-			</script>    
+        </script><script type="text/javascript"> var params; network.on("selectNode", function (params)  {document.getElementById('selection').innerHTML = params.nodes[0];});</script>    
+
     </body>
 </html>

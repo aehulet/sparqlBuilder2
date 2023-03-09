@@ -20,5 +20,6 @@ from unlv import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('unlv/', views.index, name='index'),
-    path('unlv/<str:item_id>/item', views.item, name='item')
+    path('unlv/<str:item_id>/item', views.item, name='item'),
+    path('unlv/network', views.network, name='network')
 ]

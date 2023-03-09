@@ -28,3 +28,12 @@ def item(request, item_id):
     # insert data sets into context
     context = {'item_results': item_results, 'queries': session_queries}
     return render(request, 'unlv/item.html', context)
+
+
+def network(request):
+    from . import spql
+    dict = spql.get_wd_query(spql.UNLV_NETWORK)
+    alist = spql.load_network(dict)
+    net = spql.visualize_network(alist)
+    context = {'the_net': net}
+    return render(request, 'unlv/network.html', context)

@@ -117,9 +117,10 @@ def visualize_network(source_list):
 
     the_html = unlv_net.generate_html()
     doc = BeautifulSoup(the_html, 'html.parser')
-    body: str = doc.body
-    # remove_left = body[6:]
-    # body_clean: str = remove_left[:-7]
+    scr = doc.new_tag('script')
+    scr.string = 'var params; network.on("selectNode", function (params)  {document.getElementById("selection").innerHTML = params.nodes[0];});'
+    doc.body.insert(4, scr)
+    body = doc.body
     return body
 
 
